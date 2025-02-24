@@ -1,4 +1,4 @@
 .terraform/
 terraform.tfvars
-variable.tf
+variables.tf
 windows-ssh-script.tpl
