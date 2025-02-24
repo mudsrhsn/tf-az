@@ -20,7 +20,7 @@ jobs:
       - name: Set Up Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 3.105.0
+          terraform_version: 1.12.0-alpha20250213
 
       - name: Azure Login
         uses: azure/login@v1
