@@ -125,10 +125,10 @@ resource "azurerm_linux_virtual_machine" "tf-az-vm" {
   }
 
   computer_name = "tf-az-vm"
-  admin_ssh_key {
-    username   = "adminuser"
-    public_key = file("~/.ssh/tf-az-keyssh.pub")
-  }
+  # admin_ssh_key {
+  #   username   = "adminuser"
+  #   public_key = file("~/.ssh/tf-az-keyssh.pub")
+  # }
 
   tags = {
     environment = "dev"
