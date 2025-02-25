@@ -44,6 +44,8 @@ jobs:
           terraform import azurerm_network_security_group.tf-az-nsg /subscriptions/256c47d7-6c5f-4e92-b116-d234771e3690/resourceGroups/tf-az-resources/providers/Microsoft.Network/networkSecurityGroups/tf-az-nsg || echo "NSG already imported"
           terraform import azurerm_network_security_rule.tf-az-nsg-rule /subscriptions/256c47d7-6c5f-4e92-b116-d234771e3690/resourceGroups/tf-az-resources/providers/Microsoft.Network/networkSecurityGroups/tf-az-nsg/securityRules/tf-az-nsg-rule || echo "NSG Rule already imported"
           terraform import azurerm_public_ip.tf-az-pip /subscriptions/256c47d7-6c5f-4e92-b116-d234771e3690/resourceGroups/tf-az-resources/providers/Microsoft.Network/publicIPAddresses/tf-az-pip || echo "Public IP already imported"
+          terraform import azurerm_subnet_network_security_group_association.tf-az-subnet-nsg /subscriptions/256c47d7-6c5f-4e92-b116-d234771e3690/resourceGroups/tf-az-resources/providers/Microsoft.Network/virtualNetworks/tf-az-network/subnets/tf-az-subnet || echo "Subnet NSG Association already imported"
+          terraform import azurerm_network_interface.tf-az-nic /subscriptions/256c47d7-6c5f-4e92-b116-d234771e3690/resourceGroups/tf-az-resources/providers/Microsoft.Network/networkInterfaces/tf-az-nic || echo "Network Interface already imported"
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
