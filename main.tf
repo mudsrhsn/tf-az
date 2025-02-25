@@ -107,7 +107,7 @@ resource "azurerm_linux_virtual_machine" "tf-az-vm" {
 
   custom_data = filebase64("customdata.tpl")
 
-  disable_password_authentication = false
+  disable_password_authentication = true
 
   # admin_ssh_key {
   #   username   = "adminuser"
