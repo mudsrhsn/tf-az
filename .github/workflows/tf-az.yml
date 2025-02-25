@@ -1,4 +1,4 @@
-name: 'Terraform Azure CI/CD'
+name: 'Terraform Azure CI/CD' 
 
 on:
   push:
@@ -38,6 +38,10 @@ jobs:
 
       - name: Terraform Plan
         run: terraform plan -out=tfplan
+
+      - name: Terraform Import Resource Group
+        run: |
+          terraform import azurerm_resource_group.tf-az-rg /subscriptions/256c47d7-6c5f-4e92-b116-d234771e3690/resourceGroups/tf-az-resources || echo "Resource already exists"
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
