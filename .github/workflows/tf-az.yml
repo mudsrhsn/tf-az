@@ -40,7 +40,9 @@ jobs:
         run: |
           terraform import azurerm_resource_group.tf-az-rg /subscriptions/256c47d7-6c5f-4e92-b116-d234771e3690/resourceGroups/tf-az-resources || echo "Resource Group already imported"
           terraform import azurerm_virtual_network.tf-az-vnet /subscriptions/256c47d7-6c5f-4e92-b116-d234771e3690/resourceGroups/tf-az-resources/providers/Microsoft.Network/virtualNetworks/tf-az-network || echo "VNet already imported"
+          terraform import azurerm_subnet.tf-az-subnet /subscriptions/256c47d7-6c5f-4e92-b116-d234771e3690/resourceGroups/tf-az-resources/providers/Microsoft.Network/virtualNetworks/tf-az-network/subnets/tf-az-subnet || echo "Subnet already imported"
           terraform import azurerm_network_security_group.tf-az-nsg /subscriptions/256c47d7-6c5f-4e92-b116-d234771e3690/resourceGroups/tf-az-resources/providers/Microsoft.Network/networkSecurityGroups/tf-az-nsg || echo "NSG already imported"
+          terraform import azurerm_network_security_rule.tf-az-nsg-rule /subscriptions/256c47d7-6c5f-4e92-b116-d234771e3690/resourceGroups/tf-az-resources/providers/Microsoft.Network/networkSecurityGroups/tf-az-nsg/securityRules/tf-az-nsg-rule || echo "NSG Rule already imported"
           terraform import azurerm_public_ip.tf-az-pip /subscriptions/256c47d7-6c5f-4e92-b116-d234771e3690/resourceGroups/tf-az-resources/providers/Microsoft.Network/publicIPAddresses/tf-az-pip || echo "Public IP already imported"
 
       - name: Terraform Apply
