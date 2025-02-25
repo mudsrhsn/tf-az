@@ -109,10 +109,10 @@ resource "azurerm_linux_virtual_machine" "tf-az-vm" {
 
   disable_password_authentication = true
 
-  # admin_ssh_key {
-  #   username   = "adminuser"
-  #   public_key = file("~/.ssh/tf-az-keyssh.pub")
-  # }
+  admin_ssh_key {
+    username   = "adminuser"
+    public_key = file("~/.ssh/tf-az-keyssh.pub")
+  }
 
   os_disk {
     caching              = "ReadWrite"
