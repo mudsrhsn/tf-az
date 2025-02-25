@@ -110,8 +110,8 @@ resource "azurerm_linux_virtual_machine" "tf-az-vm" {
   disable_password_authentication = true
 
   admin_ssh_key {
-    username   = "adminuser"
-    public_key = file("~/.ssh/tf-az-keyssh.pub")
+    username   = "azureuser"
+    public_key = file("/home/runner/.ssh/tf-az-keyssh.pub")  # Correct path
   }
 
   os_disk {
