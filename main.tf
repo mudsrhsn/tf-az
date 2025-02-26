@@ -95,41 +95,73 @@ resource "azurerm_network_interface" "tf-az-nic" {
   }
 }
 
-resource "azurerm_virtual_machine" "ta-az-vm" { #previous vm configuration
+resource "azurerm_linux_virtual_machine" "ta-az-vm" {
   name                  = "ta-az-vm"
   location              = azurerm_resource_group.tf-az-rg.location
   resource_group_name   = azurerm_resource_group.tf-az-rg.name
   network_interface_ids = [azurerm_network_interface.tf-az-nic.id]
-  vm_size               = "Standard_DS1_v2"
+  size                  = "Standard_DS1_v2"
 
-  storage_image_reference {
+  admin_username                  = "adminuser"
+  disable_password_authentication = false
+  admin_password                  = "Password1234!"
+
+  custom_data = filebase64("customdata.tpl")
+
+  os_disk {
+    name                 = "osdisk"
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
+
+  source_image_reference {
     publisher = "Canonical"
     offer     = "UbuntuServer"
     sku       = "16.04-LTS"
     version   = "latest"
   }
 
-  storage_os_disk {
-    name              = "osdisk"
-    caching           = "ReadWrite"
-    create_option     = "FromImage"
-    managed_disk_type = "Standard_LRS"
-  }
-
-  os_profile {
-    computer_name  = "tf-az-vm"
-    admin_username = "adminuser"
-    admin_password = "Password1234!"
-  }
-
-  os_profile_linux_config {
-    disable_password_authentication = false
-  }
-
   tags = {
     environment = "dev"
   }
 }
+
+
+# resource "azurerm_virtual_machine" "ta-az-vm" { #previous vm configuration / without custom data added for docker.
+#   name                  = "ta-az-vm"
+#   location              = azurerm_resource_group.tf-az-rg.location
+#   resource_group_name   = azurerm_resource_group.tf-az-rg.name
+#   network_interface_ids = [azurerm_network_interface.tf-az-nic.id]
+#   vm_size               = "Standard_DS1_v2"
+
+#   storage_image_reference {
+#     publisher = "Canonical"
+#     offer     = "UbuntuServer"
+#     sku       = "16.04-LTS"
+#     version   = "latest"
+#   }
+
+#   storage_os_disk {
+#     name              = "osdisk"
+#     caching           = "ReadWrite"
+#     create_option     = "FromImage"
+#     managed_disk_type = "Standard_LRS"
+#   }
+
+#   os_profile {
+#     computer_name  = "tf-az-vm"
+#     admin_username = "adminuser"
+#     admin_password = "Password1234!"
+#   }
+
+#   os_profile_linux_config {
+#     disable_password_authentication = false
+#   }
+
+#   tags = {
+#     environment = "dev"
+#   }
+# }
 
 # resource "azurerm_linux_virtual_machine" "tf-az-vm" {
 #   name                = "tf-az-vm"
