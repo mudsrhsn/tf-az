@@ -28,7 +28,10 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Terraform Init
-        run: terraform init
+        run: terraform init -backend-config="resource_group_name=tf-az-backend-rg" \
+                      -backend-config="storage_account_name=tfazbackend123" \
+                      -backend-config="container_name=tfstate" \
+                      -backend-config="key=terraform.tfstate"
 
       - name: Terraform Format Check
         run: terraform fmt -check
@@ -51,3 +54,5 @@ jobs:
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve
+
+        
