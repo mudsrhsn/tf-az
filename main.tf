@@ -107,12 +107,12 @@ resource "azurerm_linux_virtual_machine" "tf-az-vm" {
 
   custom_data = filebase64("customdata.tpl")
 
-  disable_password_authentication = true
+  # disable_password_authentication = true
 
-  admin_ssh_key {
-    username   = "azureuser"
-    public_key = file("/home/runner/.ssh/tf-az-keyssh.pub")  # Correct path
-  }
+  # admin_ssh_key {
+  #   username   = "azureuser"
+  #   public_key = "azure_ssh_public_key"
+  # }
 
   os_disk {
     caching              = "ReadWrite"
@@ -126,7 +126,7 @@ resource "azurerm_linux_virtual_machine" "tf-az-vm" {
     version   = "latest"
   }
 
-  computer_name = "tf-az-vm"
+  # computer_name = "tf-az-vm"
   # admin_ssh_key {
   #   username   = "adminuser"
   #   public_key = file("~/.ssh/tf-az-keyssh.pub")
