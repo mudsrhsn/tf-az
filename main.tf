@@ -95,11 +95,11 @@ resource "azurerm_network_interface" "tf-az-nic" {
   }
 }
 
-resource "azurerm_virtual_machine" "ta-vm" {  #previous vm configuration
-  name                  = "ta-vm"
-  location              = azurerm_resource_group.ta-rg.location
-  resource_group_name   = azurerm_resource_group.ta-rg.name
-  network_interface_ids = [azurerm_network_interface.ta-nic.id]
+resource "azurerm_virtual_machine" "ta-az-vm" { #previous vm configuration
+  name                  = "ta-az-vm"
+  location              = azurerm_resource_group.tf-az-rg.location
+  resource_group_name   = azurerm_resource_group.tf-az-rg.name
+  network_interface_ids = [azurerm_network_interface.tf-az-nic.id]
   vm_size               = "Standard_DS1_v2"
 
   storage_image_reference {
@@ -117,7 +117,7 @@ resource "azurerm_virtual_machine" "ta-vm" {  #previous vm configuration
   }
 
   os_profile {
-    computer_name  = "ta-vm"
+    computer_name  = "tf-az-vm"
     admin_username = "adminuser"
     admin_password = "Password1234!"
   }
@@ -154,7 +154,7 @@ resource "azurerm_virtual_machine" "ta-vm" {  #previous vm configuration
 #     caching              = "ReadWrite"
 #     storage_account_type = "Standard_LRS"
 #   }
-  
+
 
 #   source_image_reference {
 #     publisher = "Canonical"
