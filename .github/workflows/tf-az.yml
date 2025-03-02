@@ -40,6 +40,9 @@ jobs:
       #                     -backend-config="container_name=tfstate" \
       #                     -backend-config="key=terraform.tfstate"
 
+      - name: Terraform Init
+        run: terraform init
+
       - name: Terraform Format Check
         run: terraform fmt -check
 
