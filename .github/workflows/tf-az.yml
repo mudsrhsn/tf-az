@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  terraform:
+  terraform-apply:
     name: 'Terraform Plan and Apply'
     runs-on: ubuntu-latest
 
@@ -46,13 +46,12 @@ jobs:
         run: terraform plan
 
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve
 
   terraform-destroy:
     name: 'Terraform Destroy'
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' # Run manually
+    needs: terraform-apply # Runs only after apply is successful
 
     steps:
       - name: Checkout Code
