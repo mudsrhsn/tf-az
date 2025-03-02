@@ -33,13 +33,6 @@ jobs:
           az storage account create --name tfazbackend123 --resource-group tf-az-backend-rg --sku Standard_LRS --kind StorageV2 --allow-blob-public-access false
           az storage container create --name tfstate --account-name tfazbackend123
 
-
-      # - name: Terraform Init
-      #   run: |
-      #     terraform init -backend-config="storage_account_name=tfazbackend123" \
-      #                     -backend-config="container_name=tfstate" \
-      #                     -backend-config="key=terraform.tfstate"
-
       - name: Terraform Init
         run: terraform init
 
@@ -55,3 +48,33 @@ jobs:
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve
+
+  terraform-destroy:
+    name: 'Terraform Destroy'
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' # Run manually
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set Up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.12.0-alpha20250213
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve
+
+      - name: Delete Backend Storage
+        run: |
+          az storage account delete --name tfazbackend123 --resource-group tf-az-backend-rg --yes
+          az group delete --name tf-az-backend-rg --yes --no-wait
