@@ -9,8 +9,8 @@ on:
       - main
 
 jobs:
-  terraform:
-    name: 'Terraform Plan, Apply & Destroy'
+  terraform-apply:
+    name: 'Terraform Plan and Apply'
     runs-on: ubuntu-latest
 
     steps:
@@ -46,12 +46,37 @@ jobs:
         run: terraform plan
 
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve
 
+  terraform-destroy:
+    name: 'Terraform Destroy'
+    runs-on: ubuntu-latest
+    needs: terraform-apply # Runs only after apply is successful
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set Up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.12.0-alpha20250213
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Terraform Init
+        run: terraform init
+
       - name: Wait Before Destroy
-        run: sleep 30  # Wait 60 seconds before destroying
+        run: sleep 60  # Wait 60 seconds before destroying
 
       - name: Terraform Destroy
-        if: always()  # Ensures destroy runs even if apply succeeds
         run: terraform destroy -auto-approve
+
+      - name: Delete Backend Storage
+        run: |
+          az storage account delete --name tfazbackend123 --resource-group tf-az-backend-rg --yes
+          az group delete --name tf-az-backend-rg --yes --no-wait
