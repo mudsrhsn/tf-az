@@ -71,7 +71,7 @@ jobs:
         run: terraform init
 
       - name: Wait Before Destroy
-        run: sleep 60  # Wait 60 seconds before destroying
+        run: sleep 30  # Wait 60 seconds before destroying
 
       - name: Terraform Destroy
         run: terraform destroy -auto-approve
